@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/*
+ * @package     Intelipost_Quote
+ * @copyright   Copyright (c) 2016 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+-->
+
+<config>
+    <event name="sales_order_save_before">
+        <observer name="intelipost_quote_sales_order_save_before" instance="Intelipost\Quote\Observer\Sales\OrderSaveBefore" />
+    </event>
+    <event name="sales_order_load_after">
+        <observer name="intelipost_quote_sales_order_load_after" instance="Intelipost\Quote\Observer\Sales\OrderLoadAfter" />
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="intelipost_quote_sales_order_place_after" instance="Intelipost\Quote\Observer\Sales\OrderPlaceAfter" />
+    </event>
+    <event name="sales_order_save_commit_after">
+        <observer name="intelipost_quote_save_commit_after" instance="Intelipost\Quote\Observer\IntelipostQuoteSaveCommitAfterObserver" />
+    </event>
+</config>
+

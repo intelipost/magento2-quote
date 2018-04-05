@@ -1,0 +1,75 @@
+<?php
+/*
+ * @package     Intelipost_Quote
+ * @copyright   Copyright (c) 2016 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+?>
+
+<div id="intelipost-quote-calendar">
+
+<div id="intelipost-quote-calendar-seldate">
+<strong><?php echo __('Select the Day in the Calendar below for Scheduled Delivery:'); ?></strong>
+</div>
+
+<br/>
+
+<div>
+<input type="radio" id="intelipost-quote-calendar-period-morning" name="intelipost-quote-calendar-period" value="morning" checked="checked">
+<label for="intelipost-quote-calendar-period-morning"><?php echo __('Morning'); ?></label>
+&nbsp;
+<input type="radio" id="intelipost-quote-calendar-period-afternoon" name="intelipost-quote-calendar-period" value="afternoon">
+<label for="intelipost-quote-calendar-period-afternoon"><?php echo __('Afternoon'); ?></label>
+</div>
+
+<br/>
+
+<div id="intelipost-quote-calendar-widget"></div>
+
+<?php
+$availableSchedulingDates = json_decode($this->getQuoteItem()->getAvailableSchedulingDates(),true);
+$minDate = str_replace('-', '/', reset($availableSchedulingDates));
+$maxDate = str_replace('-', '/', end($availableSchedulingDates));
+?>
+
+<script>
+    require([
+        "jquery",
+        "mage/calendar"
+    ], function(jQuery){
+        function noWeekends(date) {
+	        return jQuery.datepicker.noWeekends(date);
+        }
+        function onSelect(dateText, instance) {
+            var quoteId  = "<?php echo $this->getQuoteItem()->getQuoteId(); ?>";
+            var methodId = "<?php echo $this->getQuoteItem()->getDeliveryMethodId(); ?>";
+            var period   = jQuery('input[name="intelipost-quote-calendar-period"]:checked').val();
+
+            jQuery.ajax({
+                url: INTELIPOST_QUOTE_SCHEDULE_URL + "?quoteId=" + quoteId + "&methodId=" + methodId + "&selDate=" + dateText + "&period=" + period,
+                showLoader: true, // enable loader
+
+                success: function(data) {
+                    jQuery("#intelipost-quote-calendar-seldate").html("<strong>" + data + "</strong>");
+                },
+            });
+        }
+
+        jQuery("#intelipost-quote-calendar-widget").calendar({
+		    beforeShowDay: noWeekends,
+            dateFormat: "yy/mm/dd",
+            hideIfNoPrevNext: true,
+            minDate: new Date ("<?php echo $minDate; ?>"),
+            maxDate: new Date ("<?php echo $maxDate; ?>"),
+            onSelect: onSelect,
+            noWeekends: true
+        });
+
+        jQuery("input[name='intelipost-quote-calendar-period']").click(function(){
+            jQuery("#intelipost-quote-calendar-widget .ui-datepicker-current-day").click();
+        });
+    });
+</script>
+
+</div>
+

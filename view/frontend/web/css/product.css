@@ -1,0 +1,10 @@
+#product-shipping-form {
+    border: 1px solid #ccc;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+#product-shipping-form input {
+    width: 100px;
+}
+

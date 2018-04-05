@@ -1,0 +1,39 @@
+<?php
+/*
+ * @package     Intelipost_Quote
+ * @copyright   Copyright (c) 2016 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+?>
+<style type="text/css">
+.product-shipping-table th,
+.product-shipping-table td {
+    line-height: 2;
+    padding: 0;
+}
+</style>
+<?php $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data'); ?>
+<table class="product-shipping-table">
+<!--
+<tr>
+<th><?php echo __('Carrier'); ?>
+<th><?php echo __('Price'); ?>
+</tr>
+-->
+<?php foreach ($this->getRates () as $code => $rates): ?>
+<?php foreach ($rates as $_rate): ?>
+<?php if ($_rate->getErrorMessage()): ?>
+<tr>
+<td class="message error"><?php echo $_rate->getErrorMessage(); ?></td>
+<td />
+</tr>
+<?php else: ?>
+<tr>
+<td><?php echo $_rate->getMethodTitle(); ?></td>
+<td><?php echo $pricingHelper->currency ($_rate->getPrice()); ?></td>
+</tr>
+<?php endif; ?>
+<?php endforeach; ?>
+<?php endforeach; ?>
+</table>
+

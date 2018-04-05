@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/*
+ * @package     Intelipost_Quote
+ * @copyright   Copyright (c) 2016 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Intelipost_Quote::css/checkout.css" />
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Intelipost\Quote\Block\Calendar" name="intelipost.calendar" after="checkout.root" />
+            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="checkout.root" />
+        </referenceContainer>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-information" xsi:type="array">
+                                            <item name="component" xsi:type="string">Intelipost_Quote/js/view/checkout/shipping-information</item>
+                                            <item name="children" xsi:type="array">
+                                                <item name="ship-add" xsi:type="array">
+                                                    <item name="component" xsi:type="string">Intelipost_Quote/js/view/checkout/shipping-information/additional</item>
+                                                    <item name="displayArea" xsi:type="string">ship-add</item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/*
+ * @package     Intelipost_Quote
+ * @copyright   Copyright (c) 2016 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+-->
+
+<config>
+    <default>
+        <carriers>
+            <intelipost>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Intelipost\Quote\Model\Carrier\Intelipost</model>
+                <name>Intelipost Quote</name>
+                <title>Intelipost Quote</title>
+                <type>I</type>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <riskareamsg>
+This Zipcode is part of a risk region. Post Office and the carriers do not make deliveries in risk areas or difficult to access.
+For these cases, it is necessary to monitor the delivery process of the order and check the nearest unit of the delivery address provided, where the recipient You may withdraw it.
+You will receive a notice informing the post office where your application will be available for withdrawal.
+                </riskareamsg>
+                <custom_title><![CDATA[%s - days to deliver: %s]]></custom_title>
+                <same_day_title><![CDATA[%s - deliver same day]]></same_day_title>
+                <contingency_table><![CDATA[esedex.sp.json]]></contingency_table>
+                <height_attribute>intelipost_product_height</height_attribute>
+                <width_attribute>intelipost_product_width</width_attribute>
+                <length_attribute>intelipost_product_length</length_attribute>
+                <use_category_attribute>intelipost_category_attribute</use_category_attribute>
+                <value_on_zero><![CDATA[0.01]]></value_on_zero>
+            </intelipost>
+        </carriers>
+    </default>
+</config>
+
