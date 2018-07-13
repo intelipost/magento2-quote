@@ -35,8 +35,6 @@
                                         </item>
                                     </item>
                                 </item>
-                            </item>
-                            <item name="children" xsi:type="array">
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
                                         <item name="shipping-step" xsi:type="array">
