@@ -6,10 +6,10 @@
  */
 
 namespace Intelipost\Quote\Model\Carrier;
- 
+
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Rate\Result;
- 
+
 class Intelipost
 extends \Magento\Shipping\Model\Carrier\AbstractCarrier
 implements \Magento\Shipping\Model\Carrier\CarrierInterface
@@ -66,7 +66,7 @@ public function getAllowedMethods()
 
 public function collectRates(RateRequest $request, $pickup = false)
 {
-    $this->logIntelipost('collectRates');
+    $this->logIntelipost('intelipost collectrates');
     if (!$this->getConfigFlag ('active'))
     {
         return false;
@@ -75,18 +75,16 @@ public function collectRates(RateRequest $request, $pickup = false)
     {
         return false;
     }
-
-    $this->logIntelipost('collectRates a');
     // if ($this->_removeQuotes) $this->_helper->removeQuotes($this->_code);
 
-    if ($this->getConfigFlag ('marketplace_enable')) 
-    {    
+    if ($this->getConfigFlag ('marketplace_enable'))
+    {
         if ($this->_helper->isModuleEnabled($this->getConfigData ('marketplace_module_name')) && !strcmp ($this->_code, 'intelipost'))
         {
             return false;
         }
     }
-    
+
     if ($this->_helper->isModuleEnabled ('Intelipost_PreSales')
         && !strcmp ($this->_code, 'intelipost'))
     {
@@ -107,7 +105,7 @@ public function collectRates(RateRequest $request, $pickup = false)
         'request' => $request,
         'intelipost'  => $this,
         ));
-  
+
         $originZipcode = $this->_origin_zipcode ? $this->_origin_zipcode : $originZipcode;
 
     $postData = array(
@@ -150,14 +148,10 @@ public function collectRates(RateRequest $request, $pickup = false)
     // Cart Sort Order: simple, bundle, configurable
     $parentSku = null;
     $totalQuoteItems = 0;
-    $this->logIntelipost('items');
 
     foreach ($request->getAllItems () as $item)
     {
-        $this->logIntelipost('in item');
-        $this->logIntelipost(get_class($item));
         $product = $objectProduct->create()->load ($item->getProductId ());
-        $this->logIntelipost('product');
         // Type
         if (!strcmp ($item->getProductType (), 'configurable')
             || !strcmp ($item->getProductType (), 'bundle'))
@@ -223,7 +217,6 @@ public function collectRates(RateRequest $request, $pickup = false)
         $productFinalLength = $this->_helper->haveData ($length, $lengthConfigurable, $lengthContingency);
         $productFinalWeight = $this->_helper->haveData ($weight, $weightConfigurable, $weightContingency);
         $productFinalCategories = $this->_helper->haveData ($categories, $categoriesConfigurable);
-        $this->logIntelipost($categoriesConfigurable);
 
         $productFinalQty = $item->getQty () * $qtyConfigurable;
         $totalQuoteItems += $productFinalQty;
@@ -253,7 +246,6 @@ public function collectRates(RateRequest $request, $pickup = false)
     $postData ['cart_qtys'] = $cartQtys;
     $postData['seller_id'] = $request->getSellerId() ? $request->getSellerId() : '';
 
-      $this->logIntelipost($postData);
     // Result
     $result = $this->_rateResultFactory->create();
 
@@ -262,7 +254,11 @@ public function collectRates(RateRequest $request, $pickup = false)
     // API
     try
     {
+        $this->logIntelipost('apirequest');
+
         $response = $this->_api->quoteRequest (\Intelipost\Quote\Helper\Api::POST, \Intelipost\Quote\Helper\Api::QUOTE_BY_PRODUCT, $postData, $api_key);
+
+        $this->logIntelipost('apiresponse');
 
         $intelipostQuoteId = $response ['content']['id'];
     }
@@ -287,28 +283,28 @@ public function collectRates(RateRequest $request, $pickup = false)
     $this->_helper->checkFreeShipping ($response);
 
     // Volumes
-    
-    $volumes = array();        
+
+    $volumes = array();
     $volCount = count($response ['content']['volumes']);
     $arrayVol = $this->setProductsQuantity($totalQuoteItems, $volCount);
-    $count = 0;       
-    foreach ($response ['content']['volumes'] as $volume)    
+    $count = 0;
+    foreach ($response ['content']['volumes'] as $volume)
         {
-            $vWeight = $volume['weight'];         
-            $vWidth = $volume['width'];        
-            $vHeight = $volume['height'];        
+            $vWeight = $volume['weight'];
+            $vWidth = $volume['width'];
+            $vHeight = $volume['height'];
             $vLength = $volume['length'];
-            $vProductsQuantity = $arrayVol[$count];    
+            $vProductsQuantity = $arrayVol[$count];
 
-            $aux = array('weight'  => $vWeight,                    
-                        'width'  => $vWidth,                    
-                        'length' => $vLength,                    
+            $aux = array('weight'  => $vWeight,
+                        'width'  => $vWidth,
+                        'length' => $vLength,
                         'height' => $vHeight,
-                        'products_quantity' => $vProductsQuantity);        
+                        'products_quantity' => $vProductsQuantity);
             array_push($volumes, $aux);
             $count++;
         }
-        
+
 
     // Methods
     foreach ($response ['content']['delivery_options'] as $child)
@@ -445,13 +441,14 @@ public function logIntelipost($message){
                     foreach ($message as $id => $content)
                     {
                         $logger->info($id);
+                        $logger->info($content);
                     }
                 }
                 else
                 {
                     $logger->info($message);
                 }
-                
+
             }
         }
         return;
