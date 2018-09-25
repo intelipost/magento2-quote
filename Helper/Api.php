@@ -118,14 +118,14 @@ public function getContingencyValues ($postData)
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
     $dir = $objectManager->get('Magento\Framework\App\Filesystem\DirectoryList');
-    $mediaPath = $dir->getPath(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+    $varPath = $dir->getPath(\Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR);
 
-	$intelipostMediaPath = $mediaPath . DIRECTORY_SEPARATOR . 'intelipost';
+	$intelipostVarPath = $varPath . DIRECTORY_SEPARATOR . 'intelipost';
 
     /*
      * calculate State Codification
      */
-	$stateFile = $intelipostMediaPath . DIRECTORY_SEPARATOR . 'state_codification.json';
+	$stateFile = $intelipostVarPath . DIRECTORY_SEPARATOR . 'state_codification.json';
 	$stateContent = json_decode (file_get_contents ($stateFile), true);
 
     $stateCode = null;
@@ -146,7 +146,7 @@ public function getContingencyValues ($postData)
      * calculate Contingency Table
      */
     $contingencyTable = $this->_scopeConfig->getValue ('carriers/intelipost/contingency_table');
-	$tableFile = $intelipostMediaPath . DIRECTORY_SEPARATOR . $contingencyTable;
+	$tableFile = $intelipostVarPath . DIRECTORY_SEPARATOR . $contingencyTable;
 
 	$tableContent = json_decode (file_get_contents ($tableFile), true);
 

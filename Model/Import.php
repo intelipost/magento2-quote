@@ -16,24 +16,24 @@ public function import($tableName)
 {
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
     $dir = $objectManager->get('Magento\Framework\App\Filesystem\DirectoryList');
-    $mediaPath = $dir->getPath(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+    $varPath = $dir->getPath(\Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR);
 
 	$fileName = strpos ($tableName, '.json') !== false ? $tableName : $tableName . '.json';
     $data = $this->curl_get_contents (self::FALLBACK_URL . $fileName);
 
     if ($data && strcmp ($data, 'Not Found'))
     {
-		$intelipostMediaPath = $mediaPath . DIRECTORY_SEPARATOR . 'intelipost';
-        if (!is_dir ($intelipostMediaPath))  mkdir ($intelipostMediaPath, 0777, true);
+		$intelipostVarPath = $varPath . DIRECTORY_SEPARATOR . 'intelipost';
+        if (!is_dir ($intelipostVarPath))  mkdir ($intelipostVarPath, 0755, true);
 
-		$filePath = $intelipostMediaPath . DIRECTORY_SEPARATOR . $fileName;
+		$filePath = $intelipostVarPath . DIRECTORY_SEPARATOR . $fileName;
 		file_put_contents ($filePath, $data);
 
 		if (strcmp ($fileName, 'state_codification'))
         {
 			$data = $this->curl_get_contents(self::FALLBACK_URL . 'state_codification.json');
 
-			$filePath = $intelipostMediaPath . DIRECTORY_SEPARATOR . 'state_codification.json';
+			$filePath = $intelipostVarPath . DIRECTORY_SEPARATOR . 'state_codification.json';
 		    file_put_contents ($filePath, $data);
 		}
 	}
