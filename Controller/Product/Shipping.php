@@ -65,6 +65,7 @@ public function execute()
     $this->_quote->collectTotals();
     $result = $this->_quote->getShippingAddress()->getGroupedAllShippingRates ();
     if (is_string ($result)) die ($result);
+    if(getType($result)=="string") die( __($result) );
 
     $resultPage = $this->_resultPageFactory->create();
     $this->getResponse()->setBody(
