@@ -35,6 +35,11 @@ public function __construct
     parent::__construct($scopeConfig);
 }
 
+public function getHeaders()
+{
+    return array("platform: Magento 2");
+}
+
 public function quoteRequest ($httpMethod, $apiMethod, & $postData = false)
 {
     $postData ['api_request'] = json_encode ($postData);
@@ -48,7 +53,7 @@ public function quoteRequest ($httpMethod, $apiMethod, & $postData = false)
         return $result;
     }
 */
-    $response = $this->apiRequest ($httpMethod, $apiMethod, json_encode ($postData));
+    $response = $this->apiRequest ($httpMethod, $apiMethod, json_encode ($postData), $this->getHeaders());
 
     $result = json_decode ($response, true);
 
@@ -202,7 +207,7 @@ public function getContingencyValues ($postData)
 public function getEstimateDeliveryDate ($originZipcode, $destPostcode, $businessDays)
 {
     $response = $this->apiRequest (self::GET, self::QUOTE_BUSINESS_DAYS
-        . "{$originZipcode}/{$destPostcode}/{$businessDays}");
+        . "{$originZipcode}/{$destPostcode}/{$businessDays}", false, $this->getHeaders());
 
     $result = json_decode ($response, true);
 
@@ -212,7 +217,7 @@ public function getEstimateDeliveryDate ($originZipcode, $destPostcode, $busines
 public function getAvailableSchedulingDates ($originZipcode, $destPostcode, $deliveryMethodId)
 {
     $response = $this->apiRequest (self::GET, self::QUOTE_AVAILABLE_SCHEDULING_DATES
-        . "{$deliveryMethodId}/{$originZipcode}/{$destPostcode}");
+        . "{$deliveryMethodId}/{$originZipcode}/{$destPostcode}", false, $this->getHeaders());
 
     $result = json_decode ($response, true);
 
