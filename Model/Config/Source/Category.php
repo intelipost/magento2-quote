@@ -10,7 +10,7 @@ namespace Intelipost\Quote\Model\Config\Source;
 class Category extends \Magento\Catalog\Model\Config\Source\Category
 {
 
-public function toOptionArray()
+public function toOptionArray($addEmpty = false)
 {
     /** @var \Magento\Catalog\Model\ResourceModel\Category\Collection $collection */
     $collection = $this->_categoryCollectionFactory->create();
