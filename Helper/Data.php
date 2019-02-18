@@ -549,7 +549,9 @@ public function getAdditionalInformation (array $additional = null)
         'shipped_date' => $this->getShippedDate(),
     );
 
-    if(count($additional) > 0)
+    $additionCount = (is_array($additional) ? count($additional) : []);
+
+    if(count($additionCount) > 0)
     {
         $result = array_merge($result, $additional);
     }

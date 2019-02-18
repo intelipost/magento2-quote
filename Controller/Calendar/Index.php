@@ -33,6 +33,8 @@ public function execute()
     if(empty($info)) return false;
 
     $pieces = explode('_', $info); // carrier, method, store id
+    $pieces = $pieces ? $pieces : [];
+    
     if (count ($pieces) != 3) return false;
 
     $carrierName = $pieces [0];
