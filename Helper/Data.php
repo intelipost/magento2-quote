@@ -450,7 +450,7 @@ public function checkFreeshipping (& $response)
                 $lowerMethod = $deliveryMethodId;
             }
 
-            continue;
+            break;
         }
         case 'lower_delivery_date':
         {
@@ -460,7 +460,7 @@ public function checkFreeshipping (& $response)
                 $lowerMethod = $deliveryMethodId;
             }
 
-            continue;
+            break;
         }
         };
     }
