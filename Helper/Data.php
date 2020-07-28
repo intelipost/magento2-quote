@@ -212,7 +212,7 @@ public function saveQuote ($carrier, $id, $method, $postData, $volumes = false)
     $sessionId = $this->getSessionId ();
     /*
     $quoteColl = $this->_intelipostQuote->getCollection();
-    $quoteColl->getSelect()->where("session_id = '{$sessionId}'");        
+    $quoteColl->getSelect()->where("session_id = '{$sessionId}'");
     */
 
     $quoteColl = $this->getResultQuotes();
@@ -221,7 +221,7 @@ public function saveQuote ($carrier, $id, $method, $postData, $volumes = false)
 
     if (/* disabled */ false && !empty($quoteColl) && count($quoteColl) > 0 /* $quoteColl->count() */)
     {
-        foreach ($quoteColl as $single_data) 
+        foreach ($quoteColl as $single_data)
         {
             if ($single_data['delivery_method_id'] == $method ['delivery_method_id'])
             {
@@ -241,13 +241,13 @@ public function saveQuote ($carrier, $id, $method, $postData, $volumes = false)
                 if (array_key_exists('delivery_estimate_date_exact_iso', $method)) {
                     $single_data->setDeliveryExactEstimatedDate($method['delivery_estimate_date_exact_iso']);
                 }
-                
+
                 $single_data->setDeliveryMethodName($method['delivery_method_name']);
 
                 if (array_key_exists('delivery_method_type', $method)) {
                     $single_data->setDeliveryMethodType($method['delivery_method_type']);
                 }
-                
+
                 $single_data->setAvailableSchedulingDates ($method ['available_scheduling_dates']);
 
                 $single_data->setProviderShippingCost ($method ['provider_shipping_cost']);
@@ -289,13 +289,13 @@ public function saveQuote ($carrier, $id, $method, $postData, $volumes = false)
         if (array_key_exists('delivery_estimate_date_exact_iso', $method)) {
             $quote->setDeliveryExactEstimatedDate($method['delivery_estimate_date_exact_iso']);
         }
-        
+
         $quote->setDeliveryMethodName($method['delivery_method_name']);
 
         if (array_key_exists('delivery_method_type', $method)) {
             $quote->setDeliveryMethodType($method['delivery_method_type']);
         }
-        
+
         $quote->setAvailableSchedulingDates ($method ['available_scheduling_dates']);
 
         $quote->setProviderShippingCost ($method ['provider_shipping_cost']);
@@ -339,13 +339,13 @@ public function saveQuote ($carrier, $id, $method, $postData, $volumes = false)
     if (array_key_exists('delivery_estimate_date_exact_iso', $method)) {
         $quote->setDeliveryExactEstimatedDate($method['delivery_estimate_date_exact_iso']);
     }
-    
+
     $quote->setDeliveryMethodName($method['delivery_method_name']);
 
     if (array_key_exists('delivery_method_type', $method)) {
         $quote->setDeliveryMethodType($method['delivery_method_type']);
     }
-    
+
     $quote->setAvailableSchedulingDates ($method ['available_scheduling_dates']);
 
     $quote->setProviderShippingCost ($method ['provider_shipping_cost']);
@@ -450,7 +450,7 @@ public function checkFreeshipping (& $response)
                 $lowerMethod = $deliveryMethodId;
             }
 
-            continue;
+            break;
         }
         case 'lower_delivery_date':
         {
@@ -460,7 +460,7 @@ public function checkFreeshipping (& $response)
                 $lowerMethod = $deliveryMethodId;
             }
 
-            continue;
+            break;
         }
         };
     }
