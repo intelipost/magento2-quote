@@ -10,8 +10,8 @@
 <config>
     <module name="Intelipost_Quote" setup_version="1.3.2">
         <sequence>
-            <module name="Intelipost_Basic" />
-            <module name="Magento_Quote" />
+            <module name="Intelipost_Basic"/>
+            <module name="Magento_Quote"/>
         </sequence>
     </module>
 </config>

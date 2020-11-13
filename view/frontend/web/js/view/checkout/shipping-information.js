@@ -1,10 +1,8 @@
-<!--
-/*
- * @package     Intelipost_Quote
- * @copyright   Copyright (c) 2017 Gamuza Technologies (http://www.gamuza.com.br/)
- * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
- */
--->
+    /*
+     * @package     Intelipost_Quote
+     * @copyright   Copyright (c) 2017 Gamuza Technologies (http://www.gamuza.com.br/)
+     * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+     */
 
 /*jshint browser:true jquery:true*/
 /*global alert*/
@@ -17,28 +15,28 @@ define(
         'Magento_Checkout/js/model/step-navigator',
         'Magento_Checkout/js/model/sidebar'
     ],
-    function($, Component, quote, stepNavigator, sidebarModel) {
+    function ($, Component, quote, stepNavigator, sidebarModel) {
         'use strict';
         return Component.extend({
             defaults: {
                 template: 'Intelipost_Quote/checkout/shipping-information'
             },
 
-            isVisible: function() {
+            isVisible: function () {
                 return !quote.isVirtual() && stepNavigator.isProcessed('shipping');
             },
 
-            getShippingMethodTitle: function() {
+            getShippingMethodTitle: function () {
                 var shippingMethod = quote.shippingMethod();
                 return shippingMethod ? shippingMethod.carrier_title + " - " + shippingMethod.method_title : '';
             },
 
-            back: function() {
+            back: function () {
                 sidebarModel.hide();
                 stepNavigator.navigateTo('shipping');
             },
 
-            backToShippingMethod: function() {
+            backToShippingMethod: function () {
                 sidebarModel.hide();
                 stepNavigator.navigateTo('shipping', 'opc-shipping_method');
             }

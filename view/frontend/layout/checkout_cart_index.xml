@@ -10,8 +10,8 @@
 <page>
     <body>
         <referenceContainer name="footer-container">
-            <block class="Intelipost\Quote\Block\Calendar" name="intelipost.calendar" after="footer" />
-            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="footer" />
+            <block class="Intelipost\Quote\Block\Calendar" name="intelipost.calendar" after="footer"/>
+            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="footer"/>
         </referenceContainer>
     </body>
 </page>

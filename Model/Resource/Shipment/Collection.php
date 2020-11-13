@@ -1,16 +1,21 @@
 <?php
+
 namespace Intelipost\Quote\Model\Resource\Shipment;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
 {
+    const YOUR_TABLE = 'intelipost_shipment';
     /**
      * Define model & resource model
      */
 
     protected $_idFieldName = 'id';
-    const YOUR_TABLE = 'intelipost_shipment';
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
 
     public function __construct(
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
@@ -26,19 +31,24 @@ class Collection extends AbstractCollection
             'Intelipost\Quote\Model\Resource\Shipment'
         );
         parent::__construct(
-            $entityFactory, $logger, $fetchStrategy, $eventManager, $connection,
+            $entityFactory,
+            $logger,
+            $fetchStrategy,
+            $eventManager,
+            $connection,
             $resource
         );
         $this->storeManager = $storeManager;
     }
+
     protected function _initSelect()
     {
         parent::_initSelect();
 
         $this->getSelect()->joinLeft(
-                ['so' => $this->getTable('sales_order')],
-                'main_table.entity_id = so.entity_id',
-                ['created_at', 'shipping_amount', 'status', 'customer_firstname', 'customer_lastname', 'customer_email', 'customer_taxvat', 'base_grand_total', 'increment_id']
-            );
+            ['so' => $this->getTable('sales_order')],
+            'main_table.entity_id = so.entity_id',
+            ['created_at', 'shipping_amount', 'status', 'customer_firstname', 'customer_lastname', 'customer_email', 'customer_taxvat', 'base_grand_total', 'increment_id']
+        );
     }
 }

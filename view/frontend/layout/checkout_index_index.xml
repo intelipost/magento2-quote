@@ -7,14 +7,15 @@
  */
 -->
 
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="Intelipost_Quote::css/checkout.css" />
+        <css src="Intelipost_Quote::css/checkout.css"/>
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Intelipost\Quote\Block\Calendar" name="intelipost.calendar" after="checkout.root" />
-            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="checkout.root" />
+            <block class="Intelipost\Quote\Block\Calendar" name="intelipost.calendar" after="checkout.root"/>
+            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="checkout.root"/>
         </referenceContainer>
         <referenceBlock name="checkout.root">
             <arguments>
@@ -25,10 +26,14 @@
                                 <item name="sidebar" xsi:type="array">
                                     <item name="children" xsi:type="array">
                                         <item name="shipping-information" xsi:type="array">
-                                            <item name="component" xsi:type="string">Intelipost_Quote/js/view/checkout/shipping-information</item>
+                                            <item name="component"
+                                                  xsi:type="string">Intelipost_Quote/js/view/checkout/shipping-information
+                                            </item>
                                             <item name="children" xsi:type="array">
                                                 <item name="ship-add" xsi:type="array">
-                                                    <item name="component" xsi:type="string">Intelipost_Quote/js/view/checkout/shipping-information/additional</item>
+                                                    <item name="component"
+                                                          xsi:type="string">Intelipost_Quote/js/view/checkout/shipping-information/additional
+                                                    </item>
                                                     <item name="displayArea" xsi:type="string">ship-add</item>
                                                 </item>
                                             </item>
@@ -43,8 +48,11 @@
                                                     <item name="children" xsi:type="array">
                                                         <item name="shipping-rates-validation" xsi:type="array">
                                                             <item name="children" xsi:type="array">
-                                                                <item name="intelipost-rates-validation" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Intelipost_Quote/js/view/shipping-rates-validation</item>
+                                                                <item name="intelipost-rates-validation"
+                                                                      xsi:type="array">
+                                                                    <item name="component"
+                                                                          xsi:type="string">Intelipost_Quote/js/view/shipping-rates-validation
+                                                                    </item>
                                                                 </item>
                                                             </item>
                                                         </item>

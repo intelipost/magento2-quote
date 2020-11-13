@@ -10,70 +10,71 @@
 
 <script>
 
-require([
-    'jquery',
-    'prototype',
-    'mage/backend/validation',
-    'jquery/validate'
-], function(jQuery){
+    require([
+        'jquery',
+        'prototype',
+        'mage/backend/validation',
+        'jquery/validate'
+    ], function (jQuery) {
 
-    function enableContingencyImportSpan() {
-        Form.Element.enable('contingency_import_span');
-        $('contingency_import_span').removeClassName('no-display');
-    }
+        function enableContingencyImportSpan() {
+            Form.Element.enable('contingency_import_span');
+            $('contingency_import_span').removeClassName('no-display');
+        }
 
-    function disableContingencyImportSpan() {
-        Form.Element.disable('contingency_import_span');
-        $('contingency_import_span').addClassName('no-display');
-    }
+        function disableContingencyImportSpan() {
+            Form.Element.disable('contingency_import_span');
+            $('contingency_import_span').addClassName('no-display');
+        }
 
-    function enableContingencyImportButton() {
-        Form.Element.enable('contingency_import');
-        $('contingency_import').removeClassName('disabled');
-    }
+        function enableContingencyImportButton() {
+            Form.Element.enable('contingency_import');
+            $('contingency_import').removeClassName('disabled');
+        }
 
-    function disableContingencyImportButton() {
-        Form.Element.disable('contingency_import');
-        $('contingency_import').addClassName('disabled');
-    }
+        function disableContingencyImportButton() {
+            Form.Element.disable('contingency_import');
+            $('contingency_import').addClassName('disabled');
+        }
 
-    jQuery('#contingency_import').click(function () {
-        jQuery.validator.validateElement('#carriers_intelipost_contingency_table');
+        jQuery('#contingency_import').click(function () {
+            jQuery.validator.validateElement('#carriers_intelipost_contingency_table');
 
-        params = {
-            table: $('carriers_intelipost_contingency_table').value,
-        };
+            params = {
+                table: $('carriers_intelipost_contingency_table').value,
+            };
 
-        new Ajax.Request('<?php /* @escapeNotVerified */ echo $block->getAjaxContingencyImportUrl() ?>', {
-            parameters:     params,
-            loaderArea:     false,
-            asynchronous:   true,
+            new Ajax.Request('<?php /* @escapeNotVerified */ echo $block->getAjaxContingencyImportUrl() ?>', {
+                parameters: params,
+                loaderArea: false,
+                asynchronous: true,
 
-            onSuccess: function(response) {
-                disableContingencyImportSpan();
-                enableContingencyImportButton();
-            },
+                onSuccess: function (response) {
+                    disableContingencyImportSpan();
+                    enableContingencyImportButton();
+                },
 
-            onComplete: function(response) {
-                $('contingency_import_message_span').textContent = "<?php echo __('Successo'); ?>";
-            },
+                onComplete: function (response) {
+                    $('contingency_import_message_span').textContent = "<?php echo __('Successo'); ?>";
+                },
 
-            onFailure: function(response) {
-                $('contingency_import_message_span').textContent = "<?php echo __('Failure'); ?>";
-            }
+                onFailure: function (response) {
+                    $('contingency_import_message_span').textContent = "<?php echo __('Failure'); ?>";
+                }
+            });
+
+            enableContingencyImportSpan();
+            disableContingencyImportButton();
         });
-
-        enableContingencyImportSpan();
-        disableContingencyImportButton();
     });
-});
 
 </script>
 
 <?php echo $block->getButtonHtml() ?>
 
 <span class="no-display" id="contingency_import_span">
-    <img alt="Import" style="margin:0 5px" src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/process_spinner.gif') ?> "/>
+    <img alt="Import" style="margin:0 5px" src="<?php /* @escapeNotVerified */
+    echo $block->getViewFileUrl('images/process_spinner.gif') ?> "/>
 </span>
 <span id="contingency_import_message_span"></span>
 

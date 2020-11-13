@@ -1,10 +1,9 @@
-<!--
-/*
- * @package     Intelipost_Quote
- * @copyright   Copyright (c) 2017 Gamuza Technologies (http://www.gamuza.com.br/)
- * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
- */
--->
+    /*
+     * @package     Intelipost_Quote
+     * @copyright   Copyright (c) 2017 Gamuza Technologies (http://www.gamuza.com.br/)
+     * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
+     */
+
 
 define([
     'uiComponent'
@@ -14,7 +13,7 @@ define([
         defaults: {
             template: 'Intelipost_Quote/checkout/shipping-information/additional'
         },
-        getShippingInformationAdditional: function(){
+        getShippingInformationAdditional: function () {
             var result = 'blah';
 
             jQuery.ajax({
@@ -22,7 +21,7 @@ define([
                 async: false,
                 showLoader: true, // enable loader
 
-                success: function(data) {
+                success: function (data) {
                     result = data;
                 },
             });

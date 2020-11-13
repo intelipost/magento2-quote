@@ -10,7 +10,7 @@
 <config>
     <router id="admin">
         <route id="intelipost" frontName="intelipost">
-            <module name="Intelipost_Quote" />
+            <module name="Intelipost_Quote"/>
         </route>
     </router>
 </config>

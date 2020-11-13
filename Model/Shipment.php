@@ -11,10 +11,8 @@ use Magento\Framework\Model\AbstractModel;
 
 class Shipment extends AbstractModel
 {
-
-protected function _construct()
-{
-    $this->_init('Intelipost\Quote\Model\Resource\Shipment');
-}
-
+    protected function _construct()
+    {
+        $this->_init('Intelipost\Quote\Model\Resource\Shipment');
+    }
 }

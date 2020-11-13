@@ -7,41 +7,42 @@
 ?>
 
 <div class="footer content">
-<p>
-<button type="button" id="intelipost-debug-button" class="action primary" title="Intelipost Debug">
-<span><?php echo __('Intelipost Debug'); ?></span>
-</button>
-</p><p>
-<div id="intelipost-debug-result">&nbsp;<?php echo __('click the button above'); ?></div>
-</p>
+    <p>
+        <button type="button" id="intelipost-debug-button" class="action primary" title="Intelipost Debug">
+            <span><?php echo __('Intelipost Debug'); ?></span>
+        </button>
+    </p>
+    <p>
+    <div id="intelipost-debug-result">&nbsp;<?php echo __('click the button above'); ?></div>
+    </p>
 </div>
 
 <script>
 
-require([
-    'jquery',
-    'jquery/validate'
-], function(jQuery){
+    require([
+        'jquery',
+        'jquery/validate'
+    ], function (jQuery) {
 
-jQuery("#intelipost-debug-button").click(function(){
+        jQuery("#intelipost-debug-button").click(function () {
 
-    jQuery.ajax({
-        url: '<?php echo $this->getAjaxDebugUrl() ?>',
-        async: false,
-        showLoader: true, // enable loader
+            jQuery.ajax({
+                url: '<?php echo $this->getAjaxDebugUrl() ?>',
+                async: false,
+                showLoader: true, // enable loader
 
-        success: function(data) {
-            jQuery('#intelipost-debug-result').html (data);
-        },
+                success: function (data) {
+                    jQuery('#intelipost-debug-result').html(data);
+                },
 
-        error: function() {
-            jQuery('#intelipost-debug-result').text ("<?php echo __('Failure'); ?>");
-        }
+                error: function () {
+                    jQuery('#intelipost-debug-result').text("<?php echo __('Failure'); ?>");
+                }
+            });
+
+        });
+
     });
-
-});
-
-});
 
 </script>
 

@@ -10,7 +10,7 @@
 <config>
     <router id="standard">
         <route id="intelipost_quote" frontName="intelipost_quote">
-            <module name="Intelipost_Quote" />
+            <module name="Intelipost_Quote"/>
         </route>
     </router>
 </config>

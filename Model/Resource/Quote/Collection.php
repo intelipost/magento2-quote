@@ -12,13 +12,13 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 class Collection extends AbstractCollection
 {
 
-protected function _construct()
-{
-    $this->_init(
-        'Intelipost\Quote\Model\Quote',
-        'Intelipost\Quote\Model\Resource\Quote'
-    );
-}
+    protected function _construct()
+    {
+        $this->_init(
+            'Intelipost\Quote\Model\Quote',
+            'Intelipost\Quote\Model\Resource\Quote'
+        );
+    }
 
 }
 

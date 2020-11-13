@@ -9,15 +9,12 @@ namespace Intelipost\Quote\Model\Config\Source\Attribute;
 
 class Select extends \Intelipost\Quote\Model\Config\Source\Attribute
 {
+    public function toOptionArray()
+    {
+        $result = [
+            ['value' => '', 'label' => __(' --- Please Select --- ')]
+        ];
 
-public function toOptionArray()
-{
-    $result = array(
-        array ('value' => '', 'label' => __(' --- Please Select --- '))
-    );
-
-    return array_merge ($result, parent::toOptionArray ());
+        return array_merge($result, parent::toOptionArray());
+    }
 }
-
-}
-

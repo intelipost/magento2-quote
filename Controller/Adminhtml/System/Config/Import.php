@@ -10,17 +10,17 @@ namespace Intelipost\Quote\Controller\Adminhtml\System\Config;
 class Import extends \Magento\Backend\App\Action
 {
 
-public function execute()
-{
-    $requestTable = $this->getRequest()->getParam('table');
+    public function execute()
+    {
+        $requestTable = $this->getRequest()->getParam('table');
 
-    $this->_getImportSingleton()->import($requestTable);
-}
+        $this->_getImportSingleton()->import($requestTable);
+    }
 
-protected function _getImportSingleton()
-{
-    return $this->_objectManager->get('Intelipost\Quote\Model\Import');
-}
+    protected function _getImportSingleton()
+    {
+        return $this->_objectManager->get('Intelipost\Quote\Model\Import');
+    }
 
 }
 

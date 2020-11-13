@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <type name="Magento\Quote\Model\Quote\Address">
-    	<plugin name="IntelipostQuoteAddress" type="Intelipost\Quote\Model\Quote\Plugin" sortOrder="2" disabled="false" />
-	</type>
+        <plugin name="IntelipostQuoteAddress" type="Intelipost\Quote\Model\Quote\Plugin" sortOrder="2"
+                disabled="false"/>
+    </type>
 
-	<type name="Magento\Quote\Model\Quote\Address\Rate">
-		<plugin name="IntelipostQuoteAddressRate" type="Intelipost\Quote\Model\Quote\Address\Plugin" sortOrder="2" disabled="false" />
-	</type>
+    <type name="Magento\Quote\Model\Quote\Address\Rate">
+        <plugin name="IntelipostQuoteAddressRate" type="Intelipost\Quote\Model\Quote\Address\Plugin" sortOrder="2"
+                disabled="false"/>
+    </type>
 
-	<type name="Magento\Quote\Model\Cart\ShippingMethodConverter">
-		<plugin name="IntelipostQuoteAddressCartShippingMethodConverter" type="Intelipost\Quote\Model\Cart\Plugin" sortOrder="2" disabled="false" />
-	</type>
+    <type name="Magento\Quote\Model\Cart\ShippingMethodConverter">
+        <plugin name="IntelipostQuoteAddressCartShippingMethodConverter" type="Intelipost\Quote\Model\Cart\Plugin"
+                sortOrder="2" disabled="false"/>
+    </type>
+
+    <type name="Intelipost\Quote\Helper\Api">
+        <arguments>
+            <argument name="logger" xsi:type="object">Intelipost\Basic\Logger\Logger</argument>
+            <argument name="scopeConfig" xsi:type="object">\Magento\Framework\App\Config\ScopeConfigInterface</argument>
+            <argument name="cache" xsi:type="object">\Magento\Framework\App\CacheInterface</argument>
+        </arguments>
+    </type>
 </config>
 

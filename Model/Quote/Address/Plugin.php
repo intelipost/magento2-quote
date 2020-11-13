@@ -6,17 +6,15 @@ class Plugin
 {
     protected $_scopeConfig;
 
-	public function aroundImportShippingRate($subject, $proceed, \Magento\Quote\Model\Quote\Address\RateResult\AbstractResult $rate)
-	{
+    public function aroundImportShippingRate($subject, $proceed, \Magento\Quote\Model\Quote\Address\RateResult\AbstractResult $rate)
+    {
         $result = $proceed($rate);
 
         $warnMessage = $rate->getWarnMessage();
-        if (!empty ($warnMessage))
-        {
+        if (!empty($warnMessage)) {
             $result->setErrorMessage($warnMessage);
         }
 
         return $result;
-	}
+    }
 }
-

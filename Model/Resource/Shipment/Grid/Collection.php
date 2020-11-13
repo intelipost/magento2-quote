@@ -1,9 +1,10 @@
 <?php
+
 namespace Intelipost\Quote\Model\Resource\Shipment\Grid;
 
+use Intelipost\Quote\Model\Resource\Shipment\Collection as GridCollection;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Search\AggregationInterface;
-use Intelipost\Quote\Model\Resource\Shipment\Collection as GridCollection;
 
 /**
  * Class Collection
@@ -13,9 +14,20 @@ class Collection extends GridCollection implements SearchResultInterface
 {
     /**
      * Resource initialization
-     * @return $this
+     * @param \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param $mainTable
+     * @param $eventPrefix
+     * @param $eventObject
+     * @param $resourceModel
+     * @param string $model
+     * @param null $connection
+     * @param \Magento\Framework\Model\ResourceModel\Db\AbstractDb|null $resource
      */
-   public function __construct(
+    public function __construct(
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
@@ -61,7 +73,6 @@ class Collection extends GridCollection implements SearchResultInterface
     {
         $this->aggregations = $aggregations;
     }
-
 
     /**
      * Get search criteria.

@@ -9,14 +9,15 @@
 
 <page>
     <head>
-        <css src="Intelipost_Quote::css/product.css" />
+        <css src="Intelipost_Quote::css/product.css"/>
     </head>
     <body>
         <referenceContainer name="product.info.social">
-            <block class="Intelipost\Quote\Block\Product\View" name="product.info.shipping" as="shipping" template="product/view/shipping.phtml" />
+            <block class="Intelipost\Quote\Block\Product\View" name="product.info.shipping" as="shipping"
+                   template="product/view/shipping.phtml"/>
         </referenceContainer>
         <referenceContainer name="footer-container">
-            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="footer" />
+            <block class="Intelipost\Quote\Block\Debug" name="intelipost.debug" after="footer"/>
         </referenceContainer>
     </body>
 </page>

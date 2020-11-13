@@ -12,10 +12,10 @@ use Magento\Framework\Model\AbstractModel;
 class Quote extends AbstractModel
 {
 
-protected function _construct()
-{
-    $this->_init('Intelipost\Quote\Model\Resource\Quote');
-}
+    protected function _construct()
+    {
+        $this->_init('Intelipost\Quote\Model\Resource\Quote');
+    }
 
 }
 

@@ -7,25 +7,22 @@
 
 namespace Intelipost\Quote\Block;
 
+use Magento\Framework\View\Element\Template\Context;
+
 class Debug extends \Magento\Framework\View\Element\Template
 {
+    public function __construct(
+        Context $context
+    ) {
+        parent::__construct($context);
 
-public function __construct(
-    \Magento\Framework\View\Element\Template\Context $context
-)
-{
-    parent::__construct($context);
+        if ($this->_scopeConfig->getValue('carriers/intelipost/debug')) {
+            $this->setTemplate('debug.phtml');
+        }
+    }
 
-    if ($this->_scopeConfig->getValue ('carriers/intelipost/debug'))
+    public function getAjaxDebugUrl()
     {
-        $this->setTemplate('debug.phtml');
+        return $this->getUrl('intelipost_quote/debug/index');
     }
 }
-
-public function getAjaxDebugUrl()
-{
-    return $this->getUrl('intelipost_quote/debug/index');
-}
-
-}
-

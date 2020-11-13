@@ -13,32 +13,29 @@ use Magento\Framework\Event\ObserverInterface;
 class OrderLoadAfter implements ObserverInterface
 {
 
-public function execute(Observer $observer)
-{
-    $order = $observer->getOrder();
-
-    $extensionAttributes = $order->getExtensionAttributes();
-
-    if ($extensionAttributes === null)
+    public function execute(Observer $observer)
     {
-        $extensionAttributes = $this->getOrderExtensionDependency();
+        $order = $observer->getOrder();
+
+        $extensionAttributes = $order->getExtensionAttributes();
+
+        if ($extensionAttributes === null) {
+            $extensionAttributes = $this->getOrderExtensionDependency();
+        }
+
+        $intelipostQuote = $order->getData('intelipost_quote');
+
+        $extensionAttributes->setIntelipostQuote($intelipostQuote);
+
+        $order->setExtensionAttributes($extensionAttributes);
     }
 
-    $intelipostQuote = $order->getData('intelipost_quote');
-
-    $extensionAttributes->setIntelipostQuote($intelipostQuote);
-
-    $order->setExtensionAttributes($extensionAttributes);
-}
-
-private function getOrderExtensionDependency()
-{
-    $orderExtension = \Magento\Framework\App\ObjectManager::getInstance()->get(
-        '\Magento\Sales\Api\Data\OrderExtension'
-    );
-
-    return $orderExtension;
-}
+    private function getOrderExtensionDependency()
+    {
+        return \Magento\Framework\App\ObjectManager::getInstance()->get(
+            '\Magento\Sales\Api\Data\OrderExtension'
+        );
+    }
 
 }
 

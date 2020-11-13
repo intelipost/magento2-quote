@@ -8,78 +8,74 @@
 
 <script>
 
-require([
-    'jquery',
-    'prototype',
-    'jquery/validate'
-], function(jQuery){
+    require([
+        'jquery',
+        'prototype',
+        'jquery/validate'
+    ], function (jQuery) {
 
-    function enableProductShippingButton() {
-        Form.Element.enable('product-shipping-button');
-        $('product-shipping-button').removeClassName('no-display');
-    }
-
-    function disableProductShippingButton() {
-        Form.Element.disable('product-shipping-button');
-        $('product-shipping-button').addClassName('no-display');
-    }
-
-    jQuery('#product-shipping-postcode').on('keyup', function(){
-        var value = $('product-shipping-postcode').value.replace(/^(\d{5})(\d{1,})/, "$1-$2");
-        $('product-shipping-postcode').value = value;
-    });
-
-    jQuery('#product-shipping-button').click(function(){
-
-        if (!jQuery("#product_addtocart_form").validation('isValid')) return;
-
-        var postcode = $('product-shipping-postcode').value.replace(/[-]/g, '');
-
-        if (!postcode.length || postcode.length != 8)
-        {
-            $('product-shipping-result').textContent = "<?php echo __('Please fill the zipcode field!'); ?>";
-            $('product-shipping-postcode').focus ();
+        function enableProductShippingButton() {
+            Form.Element.enable('product-shipping-button');
+            $('product-shipping-button').removeClassName('no-display');
         }
-        else
-        {
-            jQuery.ajax({
-                url: '<?php echo $this->getAjaxShippingUrl() ?>',
-                data: jQuery('#product_addtocart_form, #product-shipping-form').serialize(),
 
-                success: function(data) {
-                    $('product-shipping-result').update (data);
-                    enableProductShippingButton();
-                },
-
-                error: function() {
-                    $('product-shipping-result').textContent = "<?php echo __('Failure'); ?>";
-                    enableProductShippingButton();
-                }
-            });
-
-            $('product-shipping-result').textContent = "<?php echo __('Calculating ...'); ?>";
-            disableProductShippingButton();
+        function disableProductShippingButton() {
+            Form.Element.disable('product-shipping-button');
+            $('product-shipping-button').addClassName('no-display');
         }
-    });
 
-    jQuery('#product-shipping-postcode').keypress(function(e){
-        if (e.which == 13)
-        {
-            jQuery('#product-shipping-button').click();
+        jQuery('#product-shipping-postcode').on('keyup', function () {
+            var value = $('product-shipping-postcode').value.replace(/^(\d{5})(\d{1,})/, "$1-$2");
+            $('product-shipping-postcode').value = value;
+        });
 
-            return false;
-        }
+        jQuery('#product-shipping-button').click(function () {
+
+            if (!jQuery("#product_addtocart_form").validation('isValid')) return;
+
+            var postcode = $('product-shipping-postcode').value.replace(/[-]/g, '');
+
+            if (!postcode.length || postcode.length != 8) {
+                $('product-shipping-result').textContent = "<?php echo __('Please fill the zipcode field!'); ?>";
+                $('product-shipping-postcode').focus();
+            } else {
+                jQuery.ajax({
+                    url: '<?php echo $this->getAjaxShippingUrl() ?>',
+                    data: jQuery('#product_addtocart_form, #product-shipping-form').serialize(),
+
+                    success: function (data) {
+                        $('product-shipping-result').update(data);
+                        enableProductShippingButton();
+                    },
+
+                    error: function () {
+                        $('product-shipping-result').textContent = "<?php echo __('Failure'); ?>";
+                        enableProductShippingButton();
+                    }
+                });
+
+                $('product-shipping-result').textContent = "<?php echo __('Calculating ...'); ?>";
+                disableProductShippingButton();
+            }
+        });
+
+        jQuery('#product-shipping-postcode').keypress(function (e) {
+            if (e.which == 13) {
+                jQuery('#product-shipping-button').click();
+
+                return false;
+            }
+        });
     });
-});
 
 </script>
 
 <form id="product-shipping-form">
-    <!-- <input name="form_key" value="<?php echo $this->getFormKey (); ?>" type="hidden" /> -->
-    <!-- <input name="product" value="<?php echo $this->getProduct()->getId (); ?>" type="hidden" /> -->
-    <input name="sku" value="<?php echo $this->getProduct ()->getSku (); ?>" type="hidden" />
-    <input name="url" value="<?php echo $this->getCurrentProductUrl (); ?>" type="hidden" />
-    <input name="country" value="BR" type="hidden" />
+    <!-- <input name="form_key" value="<?php echo $this->getFormKey(); ?>" type="hidden" /> -->
+    <!-- <input name="product" value="<?php echo $this->getProduct()->getId(); ?>" type="hidden" /> -->
+    <input name="sku" value="<?php echo $this->getProduct()->getSku(); ?>" type="hidden"/>
+    <input name="url" value="<?php echo $this->getCurrentProductUrl(); ?>" type="hidden"/>
+    <input name="country" value="BR" type="hidden"/>
     <div class="fieldset">
         <div class="field">
             <label class="label" for="product-shipping-postcode">
@@ -87,8 +83,10 @@ require([
             </label>
         </div>
         <div class="field">
-            <input name="postcode" id="product-shipping-postcode" maxlength="9" title="<?php echo __('Postcode'); ?>" class="input-text" type="text">
-            <button type="button" title="<?php echo __('Calculate'); ?>" class="action primary" id="product-shipping-button">
+            <input name="postcode" id="product-shipping-postcode" maxlength="9" title="<?php echo __('Postcode'); ?>"
+                   class="input-text" type="text">
+            <button type="button" title="<?php echo __('Calculate'); ?>" class="action primary"
+                    id="product-shipping-button">
                 <span><?php echo __('Calculate'); ?></span>
             </button>
         </div>
