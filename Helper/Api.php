@@ -7,47 +7,28 @@
 
 namespace Intelipost\Quote\Helper;
 
-class Api extends \Intelipost\Basic\Helper\Api
+class Api
 {
-    const LOG = 'var/log/intelipost.log';
-
     const QUOTE_BY_PRODUCT = 'quote_by_product/';
     const QUOTE_BUSINESS_DAYS = 'quote/business_days/';
     const QUOTE_AVAILABLE_SCHEDULING_DATES = 'quote/available_scheduling_dates/';
 
     protected $_scopeConfig;
-    protected $_cache;
-    /**
-     * @var \Intelipost\Basic\Logger\Logger
-     */
-    protected $_logger;
+    protected $client;
 
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\App\CacheInterface $cache,
-        \Intelipost\Basic\Logger\Logger $logger
+        \Intelipost\Basic\Client\Intelipost $client
     ) {
         $this->_scopeConfig = $scopeConfig;
-        $this->_cache = $cache;
-
-        $this->_logger = $logger;
-        parent::__construct($scopeConfig, $logger);
+        $this->client = $client;
     }
 
     public function quoteRequest($httpMethod, $apiMethod, &$postData = false)
     {
-        $postData ['api_request'] = json_encode($postData);
+        $postData ['api_request'] = $postData;
 
-        $result = null; // $this->getCache ($postData); // Disabled
-        /*
-            if (!empty ($result))
-            {
-                $postData ['api_response'] = json_encode ($result);
-
-                return $result;
-            }
-        */
-        $response = $this->apiRequest($httpMethod, $apiMethod, json_encode($postData));
+        $response = $this->client->apiRequest($httpMethod, $apiMethod, $postData);
 
         $result = json_decode($response, true);
 
@@ -60,20 +41,10 @@ class Api extends \Intelipost\Basic\Helper\Api
         }
 
         if (!strcmp($result ['status'], 'ERROR')) {
-            $messages = null;
-
-            foreach ($result ['messages'] as $_message) {
-                $messages .= $_message ['text'];
-            }
-
-            $this->_logger->debug($postData ['destination_zip_code'] . ' : ' . $messages);
-
-            throw new \Exception($messages);
+            throw new \Exception("Erro ao consultar API");
         }
 
         $postData ['api_response'] = $response;
-
-        // $this->saveCache ($postData, $result);
 
         return $result;
     }
@@ -174,16 +145,6 @@ class Api extends \Intelipost\Basic\Helper\Api
             . $postData ['cart_qtys'];
 
         return $identifier;
-    }
-
-    public function saveCache($postData, $responseData)
-    {
-        $identifier = $this->getCacheIdentifier($postData);
-        $lifetime = intval($this->_scopeConfig->getValue('carriers/intelipost/cache_exp_time'));
-
-        $result = $this->_cache->save(serialize($responseData), $identifier, ['collections'], $lifetime);
-
-        return $result;
     }
 
     public function getEstimateDeliveryDate($originZipcode, $destPostcode, $businessDays)

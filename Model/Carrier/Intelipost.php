@@ -21,7 +21,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
 
     protected $_scopeConfig;
     protected $_helper;
-    protected $_api;
+    protected $api;
 
     protected $_quoteFactory;
 
@@ -47,7 +47,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
 
         $this->_scopeConfig = $scopeConfig;
         $this->_helper = $helper;
-        $this->_api = $api;
+        $this->api = $api;
 
         $this->_quoteFactory = $quoteFactory;
 
@@ -239,7 +239,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         try {
             $this->logIntelipost('apirequest');
 
-            $response = $this->_api->quoteRequest(\Intelipost\Quote\Helper\Api::POST, \Intelipost\Quote\Helper\Api::QUOTE_BY_PRODUCT, $postData, $api_key);
+            $response = $this->api->quoteRequest(\Intelipost\Basic\Client\Intelipost::POST, \Intelipost\Quote\Helper\Api::QUOTE_BY_PRODUCT, $postData, $api_key);
 
             $this->logIntelipost('apiresponse');
 
@@ -325,7 +325,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
                     continue;
                 }
 
-                $response = $this->_api->getAvailableSchedulingDates(
+                $response = $this->api->getAvailableSchedulingDates(
                     $originZipcode,
                     $destPostcode,
                     $child ['delivery_method_id']
@@ -348,7 +348,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
             $deliveryEstimateBusinessDays = @ $child ['delivery_estimate_business_days'];
             $deliveryEstimateDateExactISO = @ $child ['delivery_estimate_date_exact_iso'];
             if ($estimateDeliveryDate && false /* Disabled */) {
-                $response = $this->_api->getEstimateDeliveryDate(
+                $response = $this->api->getEstimateDeliveryDate(
                     $originZipcode,
                     $destPostcode,
                     $child ['delivery_estimate_business_days']
