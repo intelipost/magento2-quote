@@ -12,7 +12,8 @@ use Magento\Quote\Model\Quote\Address\RateRequest;
 class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
     const LOG = 'intelipost.log';
-    const EVENT = 'intelipost_dynamic_zipcode';
+
+    protected $logger;
     protected $_code = 'intelipost';
 
     protected $_rateResultFactory;
@@ -40,7 +41,8 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         \Intelipost\Quote\Helper\Api $api,
         \Intelipost\Quote\Model\QuoteFactory $quoteFactory,
         array $data = []
-    ) {
+    )
+    {
         $this->_rateResultFactory = $rateResultFactory;
         $this->_rateMethodFactory = $rateMethodFactory;
         $this->_rateErrorFactory = $rateErrorFactory;
@@ -49,6 +51,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         $this->_helper = $helper;
         $this->api = $api;
 
+        $this->logger = $logger;
         $this->_quoteFactory = $quoteFactory;
 
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
@@ -57,6 +60,59 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     public function getAllowedMethods()
     {
         return ['intelipost' => $this->getConfigData('name')];
+    }
+
+    public function newCollectRates(RateRequest $request, $pickup = false)
+    {
+        $this->logger->debug("Iniciando collectRates");
+
+        if (!$this->getConfigFlag('active')) {
+            $this->logger->debug("Cotação não realizada pois o módulo esta desativo");
+            return false;
+        } elseif (!$request->getDestPostcode()) {
+            $this->logger->warning("CEP de destino não informado");
+            return false;
+        }
+
+        $api_key = $request->getIpKey() ? $request->getIpKey() : false;
+
+        // Zipcodes
+        $originZipcode = $request->getOriginZipcode() ? $request->getOriginZipcode() : $this->_scopeConfig->getValue('carriers/intelipost/source_zip');
+        $destPostcode = $request->getDestPostcode();
+
+        $postData = [
+            'carrier' => $this->_code,
+            'origin_zip_code' => preg_replace('#[^0-9]#', "", $originZipcode),
+            'destination_zip_code' => preg_replace('#[^0-9]#', "", $destPostcode),
+        ];
+
+        $this->logIntelipost($postData);
+        if (strlen($postData ['destination_zip_code']) != 8) {
+            return false;
+        }
+
+        // Default Config
+        $heightAttribute = $this->_scopeConfig->getValue('carriers/intelipost/height_attribute');
+        $widthAttribute = $this->_scopeConfig->getValue('carriers/intelipost/width_attribute');
+        $lengthAttribute = $this->_scopeConfig->getValue('carriers/intelipost/length_attribute');
+
+        $useCategoryAttribute = $this->_scopeConfig->getValue('carriers/intelipost/use_category_attribute');
+
+        $weightUnit = $this->_scopeConfig->getValue('carriers/intelipost/weight_unit') == 'gr' ? 1000 : 1;
+        $weightContingency = intval($this->_scopeConfig->getValue('carriers/intelipost/weight_contingency')) / $weightUnit;
+
+        $heightContingency = $this->_scopeConfig->getValue('carriers/intelipost/height_contingency');
+        $widthContingency = $this->_scopeConfig->getValue('carriers/intelipost/width_contingency');
+        $lengthContingency = $this->_scopeConfig->getValue('carriers/intelipost/length_contingency');
+
+        $estimateDeliveryDate = $this->_scopeConfig->getValue('carriers/intelipost/estimate_delivery_date');
+
+        $calendarOnlyCheckout = $this->_scopeConfig->getValue('carriers/intelipost/calendar_only_checkout');
+        $pageName = $this->_helper->getPageName();
+
+        $breakOnError = $this->_scopeConfig->getValue('carriers/intelipost/break_on_error');
+        $valueOnZero = $this->_scopeConfig->getValue('carriers/intelipost/value_on_zero');
+
     }
 
     public function collectRates(RateRequest $request, $pickup = false)
@@ -69,6 +125,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         }
         // if ($this->_removeQuotes) $this->_helper->removeQuotes($this->_code);
 
+        //verificar a possibilidade de remoção
         if ($this->getConfigFlag('marketplace_enable')) {
             if ($this->_helper->isModuleEnabled($this->getConfigData('marketplace_module_name')) && !strcmp($this->_code, 'intelipost')) {
                 return false;
@@ -129,6 +186,8 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
 
         $breakOnError = $this->_scopeConfig->getValue('carriers/intelipost/break_on_error');
         $valueOnZero = $this->_scopeConfig->getValue('carriers/intelipost/value_on_zero');
+
+        //PAREI A REFATORAÇÃO AQUI
 
         $cartWeight = 0;
         $cartAmount = 0;
