@@ -26,7 +26,7 @@ Este manual foi divido em três partes:
 Navegue até o diretório raíz da sua instalação do Magento 2 e execute os seguintes comandos:
 
 ```
-bin/composer require intelipost/magento2-quote   // Faz a requisição do módulo da Intelipost
+composer require intelipost/magento2-quote   // Faz a requisição do módulo da Intelipost
 bin/magento module:enable Intelipost_Quote       // Ativa o módulo
 bin/magento setup:upgrade                        // Registra a extensão
 bin/magento setup:di:compile                     // Recompila o projeto Magento
