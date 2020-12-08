@@ -149,7 +149,7 @@ class Api
 
     public function getEstimateDeliveryDate($originZipcode, $destPostcode, $businessDays)
     {
-        $response = $this->apiRequest(self::GET, self::QUOTE_BUSINESS_DAYS
+        $response = $this->apiRequest(\Intelipost\Basic\Client\Intelipost::GET, self::QUOTE_BUSINESS_DAYS
             . "{$originZipcode}/{$destPostcode}/{$businessDays}");
 
         $result = json_decode($response, true);
@@ -159,7 +159,7 @@ class Api
 
     public function getAvailableSchedulingDates($originZipcode, $destPostcode, $deliveryMethodId)
     {
-        $response = $this->apiRequest(self::GET, self::QUOTE_AVAILABLE_SCHEDULING_DATES
+        $response = $this->apiRequest(\Intelipost\Basic\Client\Intelipost::GET, self::QUOTE_AVAILABLE_SCHEDULING_DATES
             . "{$deliveryMethodId}/{$originZipcode}/{$destPostcode}");
 
         $result = json_decode($response, true);
