@@ -6,7 +6,6 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
 {
-    const YOUR_TABLE = 'intelipost_shipment';
     /**
      * Define model & resource model
      */

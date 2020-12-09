@@ -18,14 +18,16 @@ class InstallData implements InstallDataInterface
     protected $_scopeConfig;
 
     protected $_attributesList = [];
+    protected $_import;
 
     public function __construct(
         EavSetupFactory $eavSetupFactory,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Intelipost\Quote\Model\Import $import
     ) {
         $this->_eavSetupFactory = $eavSetupFactory;
         $this->_scopeConfig = $scopeConfig;
-
+        $this->_import = $import;
         $this->_attributesList = [
             'height' => __('Height'),
             'width' => __('Width'),
@@ -66,54 +68,12 @@ class InstallData implements InstallDataInterface
                 ]
             );
         }
-        /*
-            foreach ($this->_attributesList as $attributeCode => $attributeName)
-            {
-                $eavSetup->addAttribute(
-                    \Magento\Catalog\Model\Category::ENTITY,
-                    'intelipost_category_' . $attributeCode,
-                    [
-                        'type' => 'int',
-                        'backend' => '',
-                        'frontend' => '',
-                        'label' => 'Intelipost ' . __($attributeName),
-                        'input' => 'text',
-                        'class' => '',
-                        'source' => '',
-                        'global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_GLOBAL,
-                        'visible' => true,
-                        'required' => false,
-                        'user_defined' => false,
-                        'default' => '',
-                        'searchable' => false,
-                        'filterable' => false,
-                        'comparable' => false,
-                        'visible_on_front' => false,
-                        'used_in_product_listing' => true,
-                        'unique' => false,
-                        'apply_to' => ''
-                    ]
-                );
-            }
-        */
+
         $requestTable = $this->_scopeConfig->getValue('carriers/intelipost/contingency_table');
 
-        $this->_getImportSingleton()->import($requestTable);
+        $this->_import->import($requestTable);
 
         $setup->endSetup();
     }
 
-    protected function _getImportSingleton()
-    {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
-        return $objectManager->get('Intelipost\Quote\Model\Import');
-    }
-
-    protected function _getHelper()
-    {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
-        return $objectManager->get('Intelipost\Quote\Helper\Data');
-    }
 }

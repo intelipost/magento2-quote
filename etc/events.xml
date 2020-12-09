@@ -8,10 +8,6 @@
 -->
 
 <config>
-    <event name="sales_order_save_before">
-        <observer name="intelipost_quote_sales_order_save_before"
-                  instance="Intelipost\Quote\Observer\Sales\OrderSaveBefore"/>
-    </event>
     <event name="sales_order_load_after">
         <observer name="intelipost_quote_sales_order_load_after"
                   instance="Intelipost\Quote\Observer\Sales\OrderLoadAfter"/>

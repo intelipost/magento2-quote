@@ -15,13 +15,19 @@ class Api
 
     protected $_scopeConfig;
     protected $client;
+    /**
+     * @var \Magento\Framework\App\Filesystem\DirectoryList
+     */
+    protected $_directoryList;
 
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Intelipost\Basic\Client\Intelipost $client
+        \Intelipost\Basic\Client\Intelipost $client,
+        \Magento\Framework\App\Filesystem\DirectoryList $directoryList
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->client = $client;
+        $this->_directoryList = $directoryList;
     }
 
     public function quoteRequest($httpMethod, $apiMethod, &$postData = false)
@@ -53,9 +59,7 @@ class Api
     {
         $destZipcode = intval($postData ['destination_zip_code']);
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $dir = $objectManager->get('Magento\Framework\App\Filesystem\DirectoryList');
-        $varPath = $dir->getPath(\Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR);
+        $varPath = $this->_directoryList->getPath(\Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR);
 
         $intelipostVarPath = $varPath . DIRECTORY_SEPARATOR . 'intelipost';
 
@@ -117,23 +121,19 @@ class Api
             }
         }
 
-        $result = [
+        return [
             'content' => [
                 'id' => 0,
                 'delivery_options' => [$delivery]
             ]
         ];
-
-        return $result;
     }
 
     public function getCache($postData)
     {
         $identifier = $this->getCacheIdentifier($postData);
 
-        $result = unserialize($this->_cache->load($identifier));
-
-        return $result;
+        return unserialize($this->_cache->load($identifier));
     }
 
     public function getCacheIdentifier($postData)
@@ -152,9 +152,7 @@ class Api
         $response = $this->apiRequest(\Intelipost\Basic\Client\Intelipost::GET, self::QUOTE_BUSINESS_DAYS
             . "{$originZipcode}/{$destPostcode}/{$businessDays}");
 
-        $result = json_decode($response, true);
-
-        return $result;
+        return json_decode($response, true);
     }
 
     public function getAvailableSchedulingDates($originZipcode, $destPostcode, $deliveryMethodId)
@@ -162,8 +160,6 @@ class Api
         $response = $this->apiRequest(\Intelipost\Basic\Client\Intelipost::GET, self::QUOTE_AVAILABLE_SCHEDULING_DATES
             . "{$deliveryMethodId}/{$originZipcode}/{$destPostcode}");
 
-        $result = json_decode($response, true);
-
-        return $result;
+        return json_decode($response, true);
     }
 }

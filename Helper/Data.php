@@ -21,6 +21,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_customerGroup;
     protected $_storeManager;
     protected $_moduleManager;
+    protected $_categoryRepository;
+    protected $_resourceConnection;
+    protected $_session;
+    protected $_state;
 
     protected $_intelipostQuote;
     protected $_selectedSchedulingMethod;
@@ -34,9 +38,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Customer\Model\Group $customerGroup,
-        /* \Magento\Framework\Module\Manager $moduleManager, */
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Intelipost\Quote\Model\Quote $intelipostQuote
+        \Intelipost\Quote\Model\Quote $intelipostQuote,
+        \Magento\Catalog\Model\CategoryRepository $categoryRepository,
+        \Magento\Framework\App\ResourceConnection $resourceConnection,
+        \Magento\Customer\Model\Session $session,
+        \Magento\Framework\App\State $state
+
     ) {
         $this->_quoteFactory = $quoteFactory;
         $this->_sessionManager = $sessionManager;
@@ -45,8 +53,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->_checkoutSession = $checkoutSession;
         $this->_customerSession = $customerSession;
         $this->_customerGroup = $customerGroup;
-        /* $this->_moduleManager = $moduleManager; */
         $this->_storeManager = $storeManager;
+        $this->_categoryRepository = $categoryRepository;
+        $this->_resourceConnection = $resourceConnection;
+        $this->_session = $session;
+        $this->_state = $state;
 
         $this->_intelipostQuote = $intelipostQuote;
         $this->_selectedSchedulingMethod = [];
@@ -74,15 +85,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getProductCategories($product, $contingency = false)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $objectCategory = $objectManager->create('Magento\Catalog\Model\Category');
 
         $categories = null;
         $result = null;
         $collection = $product->getCategoryCollection();
 
         foreach ($collection as $child) {
-            $category = $objectCategory->load($child->getId());
+            $category = $this->_categoryRepository->getById($child->getId());
             $categories [] = $category->getName();
         }
 
@@ -115,10 +124,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         } // keep on checkout payment
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-        $connection = $resource->getConnection();
-        $tableName = $resource->getTableName('intelipost_quote'); //gives table name with prefix
+        $connection = $this->_resourceConnection->getConnection();
+        $tableName = $this->_resourceConnection->getTableName('intelipost_quote'); //gives table name with prefix
 
         $sessionId = $this->getSessionId();
 
@@ -168,11 +175,7 @@ SQL;
 
     public function getResultQuotes($key = self::RESULT_QUOTES)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
-        $session = $objectManager->get('Magento\Customer\Model\Session');
-
-        $result = $session->getData($key);
+        $result = $this->_session->getData($key);
 
         return !empty($result) ? $result : [];
     }
@@ -395,17 +398,14 @@ SQL;
 
     public function saveResultQuotes(array $data = null, $removeOlds = true, $key = self::RESULT_QUOTES)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
-        $session = $objectManager->get('Magento\Customer\Model\Session');
         if ($removeOlds) {
-            $session->setData($key, $data);
+            $this->_session->setData($key, $data);
         } else {
-            $quotes = $session->getData($key);
+            $quotes = $this->_session->getData($key);
 
             $result = $quotes ? $quotes : [];
 
-            $session->setData($key, array_merge($result, $data));
+            $this->_session->setData($key, array_merge($result, $data));
         }
     }
 
@@ -496,13 +496,8 @@ SQL;
 
     public function isAdmin()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $appState = $objectManager->get('Magento\Framework\App\State');
-        $areaCode = $appState->getAreaCode();
-
-        $result = $appState->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE;
-
-        return $result;
+        $areaCode = $this->_state->getAreaCode();
+        return $this->_state->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE;
     }
 
     public function getSubtotalAmount($contingencyPrice = 0)

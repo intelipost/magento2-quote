@@ -7,15 +7,34 @@
 
 namespace Intelipost\Quote\Model;
 
-class Import extends \Magento\Framework\Model\AbstractModel
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+
+class Import extends AbstractModel
 {
     const FALLBACK_URL = 'https://raw.githubusercontent.com/intelipost/fallback-tables/master/';
 
+    protected $_directoryList;
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        DirectoryList $directoryList,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
+        array $data = []
+    ) {
+        $this->_directoryList = $directoryList;
+        parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+    }
+
     public function import($tableName)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $dir = $objectManager->get('Magento\Framework\App\Filesystem\DirectoryList');
-        $varPath = $dir->getPath(\Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR);
+
+        $varPath = $this->_directoryList->getPath(DirectoryList::VAR_DIR);
 
         $fileName = strpos($tableName, '.json') !== false ? $tableName : $tableName . '.json';
         $data = $this->curl_get_contents(self::FALLBACK_URL . $fileName);

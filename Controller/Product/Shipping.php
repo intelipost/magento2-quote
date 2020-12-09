@@ -12,14 +12,17 @@ class Shipping extends \Magento\Framework\App\Action\Action
     protected $_quote;
 
     protected $_resultPageFactory;
+    protected $_productRepository;
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Quote\Model\Quote $quote,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        \Magento\Catalog\Model\ProductRepository $productRepository
     ) {
         $this->_quote = $quote;
         $this->_resultPageFactory = $resultPageFactory;
+        $this->_productRepository = $productRepository;
 
         parent::__construct($context);
     }
@@ -36,7 +39,7 @@ class Shipping extends \Magento\Framework\App\Action\Action
             ->setPostcode($postcode)
             ->setCollectShippingRates(true);
 
-        $product = $this->getProductById($productId);
+        $product = $this->_productRepository->getById($productId);
 
         $options = new \Magento\Framework\DataObject();
         $options->setProduct($product->getId());
@@ -75,11 +78,4 @@ class Shipping extends \Magento\Framework\App\Action\Action
         );
     }
 
-    public function getProductById($id)
-    {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $productManager = $objectManager->create('Magento\Catalog\Model\Product');
-
-        return $productManager->load($id);
-    }
 }

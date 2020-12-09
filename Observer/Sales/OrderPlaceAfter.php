@@ -34,39 +34,6 @@ class OrderPlaceAfter implements ObserverInterface
         $this->_shipmentFactory = $shipmentFactory;
         $this->_storeManager = $storeManager;
     }
-
-    public function executeOld(Observer $observer)
-    {
-        /*
-            $sessionId = $this->_sessionManager->getSessionId ();
-
-            $intelipostQuoteCollection = $this->_intelipostQuote->getCollection();
-            $intelipostQuoteCollection->getSelect()->where("session_id = '{$sessionId}' AND order_id IS NULL");
-
-            if (!$intelipostQuoteCollection->count()) return;
-        */
-        $orderInstance = $observer->getOrder();
-        $result = null;
-
-        foreach ($this->_intelipostHelper->getResultQuotes() as $quote) {
-            $result [] = $quote->getData();
-        }
-        /*
-            foreach ($intelipostQuoteCollection as $quoteItem)
-            {
-                $intelipostQuote = $this->_intelipostQuote->load ($quoteItem->getId ())
-                    ->setOrderId($orderInstance->getIncrementId())
-                    ->setShippingMethod($orderInstance->getShippingMethod())
-                    ->save();
-
-                $result [] = $intelipostQuote->getData();
-            }
-        */
-        $orderInstance->setIntelipostQuote(
-            json_encode($result)
-        )->save();
-    }
-
     public function execute(Observer $observer)
     {
         $sessionId = $this->_sessionManager->getSessionId();
@@ -81,12 +48,7 @@ class OrderPlaceAfter implements ObserverInterface
             }
 
             $deliveryMethodId = $deliveryMethodId[count($deliveryMethodId) - 2] . "_" . $deliveryMethodId[count($deliveryMethodId) - 1];
-            /*
-                    $intelipostQuoteCollection = $this->_intelipostQuote->getCollection();
-                    $intelipostQuoteCollection->getSelect()->where("session_id = '{$sessionId}' AND delivery_method_id = '{$deliveryMethodId}' AND order_id IS NULL");
 
-                    if (!$intelipostQuoteCollection->count()) return;
-            */
             foreach ($this->_intelipostHelper->getResultQuotes() as $quote) {
                 if ($quote->getDeliveryMethodId() == $deliveryMethodId && $quote->getOrderId() == null) {
                     $resultQuotes [] = $quote;
@@ -101,19 +63,6 @@ class OrderPlaceAfter implements ObserverInterface
         $result = null;
         $stored = [];
         $resultJson = [];
-        /*
-        $methodType = null;
-        foreach ($intelipostQuoteCollection as $quoteItem)
-        {
-            $methodType = $quoteItem->getDeliveryMethodType();
-            break;
-        }
-
-        $quoteColl = $this->_intelipostQuote->getCollection();
-        $quoteColl->getSelect()->where("session_id = '{$sessionId}' AND delivery_method_type = '{$methodType}' AND order_id IS NULL");
-
-        if (!$quoteColl->count()) return;
-        */
 
         $cookie = $this->_cookieManager->getCookie(\Intelipost\Quote\Controller\Schedule\Index::COOKIE_NAME);
 
@@ -121,12 +70,7 @@ class OrderPlaceAfter implements ObserverInterface
             if (in_array($quoteItem->getQuoteId(), $stored)) {
                 continue;
             }
-            /*
-                    $intelipostQuote = $this->_intelipostQuote->load ($quoteItem->getId ())
-                        ->setOrderId($orderInstance->getIncrementId())
-                        ->setShippingMethod($orderInstance->getShippingMethod())
-                        ->save();
-            */
+
             $quotes = [];
 
             if ($cookie) {
@@ -197,8 +141,6 @@ class OrderPlaceAfter implements ObserverInterface
                 array_push($resultJson['result']['quotes'], $quotes);
             }
 
-            //$result [] = $intelipostQuote->getData();
-
             $stored[$quoteItem->getQuoteId()] = $quoteItem->getQuoteId();
         }
 
@@ -243,9 +185,6 @@ class OrderPlaceAfter implements ObserverInterface
 
             if ($quotes['selected_scheduling_dates']) {
                 $obj->setScheduled(true);
-                $time = $this->schedulingTime($quoteItem->getSelectedSchedulingPeriod());
-                $obj->setSchedulingWindowStart($time->start);
-                $obj->setSchedulingWindowEnd($time->end);
                 $obj->setSelectedSchedulingDate($quotes['selected_scheduling_dates']);
             }
 
@@ -273,24 +212,5 @@ class OrderPlaceAfter implements ObserverInterface
             array_push($productsArray, $prod->id);
         }
         return $productsArray;
-    }
-
-    public function schedulingTime($period)
-    {
-        $schedulingTime = new \stdClass();
-        switch ($period) {
-            case "morning":
-                $schedulingTime->start = '08:00:00';
-                $schedulingTime->end = '12:00:00';
-                return $schedulingTime;
-            case "afternoon":
-                $schedulingTime->start = '12:00:00';
-                $schedulingTime->end = '18:00:00';
-                return $schedulingTime;
-            default:
-                $schedulingTime->start = '08:00:00';
-                $schedulingTime->end = '18:00:00';
-                return $schedulingTime;
-        }
     }
 }

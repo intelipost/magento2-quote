@@ -11,11 +11,17 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Attribute implements OptionSourceInterface
 {
+    protected $attributeCollectionFactory;
+
+    public function __construct(
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory $attributeCollectionFactory
+    ) {
+        $this->attributeCollectionFactory = $attributeCollectionFactory;
+    }
+
     public function toOptionArray()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $collection = $objectManager->create('Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection')
-            ->setAttributeSetFilter(4); // CATALOG
+        $collection = $this->attributeCollectionFactory->create()->setAttributeSetFilter(4); // CATALOG
         $collection->getSelect()->order('frontend_label');
 
         $result = [];

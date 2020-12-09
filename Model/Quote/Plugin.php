@@ -4,16 +4,24 @@ namespace Intelipost\Quote\Model\Quote;
 
 class Plugin
 {
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $_scopeConfig;
+
+    public function __construct(
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+    ) {
+        $this->_scopeConfig = $scopeConfig;
+    }
+
     public function afterGetGroupedAllShippingRates($subject, $result)
     {
         $scheduledIndex = 0;
         $scheduled = null;
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $scopeConfig = $objectManager->create('Magento\Framework\App\Config\ScopeConfigInterface');
-
-        $ag_title = $scopeConfig->getValue("carriers/intelipost/scheduled_title");
-        $ag_last = $scopeConfig->getValue("carriers/intelipost/scheduled_last");
+        $ag_title = $this->_scopeConfig->getValue("carriers/intelipost/scheduled_title");
+        $ag_last = $this->_scopeConfig->getValue("carriers/intelipost/scheduled_last");
 
         if (!$ag_last) {
             return $result;
