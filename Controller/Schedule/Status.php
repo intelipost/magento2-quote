@@ -18,6 +18,7 @@ class Status extends \Magento\Framework\App\Action\Action
 
     protected $_quoteFactory;
     protected $_quoteHelper;
+    protected $_resultPageFactory;
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -83,21 +84,17 @@ class Status extends \Magento\Framework\App\Action\Action
         if ($session->getIpSelDate()) {
             if (strpos($shippingMethod, '_') !== false) {
                 $methodId = explode('_', $shippingMethod);
-                $sessionId = $this->_quoteHelper->getSessionId();
 
                 $id = $methodId[1] . '_' . $methodId[2];
-                $sessionId = $this->_quoteHelper->getSessionId();
                 $scheduledId = $session->getIpScheludedMethodId();
 
                 if ($scheduledId == $id) {
-                    /*
-                                    $collection = $this->_quoteFactory->create()->getCollection();
-                                    $collection->getSelect()->where("session_id = '{$sessionId}' AND delivery_method_id = '{$id}'");
-                    */
                     $resultQuotes = $this->_quoteHelper->getResultQuotes();
 
                     if (!empty($resultQuotes) && count($resultQuotes) > 0 /* $collection->count() */) {
-                        $cookie = $this->_cookieManager->getCookie(\Intelipost\Quote\Controller\Schedule\Index::COOKIE_NAME);
+                        $cookie = $this->_cookieManager->getCookie(
+                            \Intelipost\Quote\Controller\Schedule\Index::COOKIE_NAME
+                        );
                         if ($cookie) {
                             $scheduled = explode('+', $cookie);
 
@@ -113,8 +110,6 @@ class Status extends \Magento\Framework\App\Action\Action
                     } else {
                         $selDate = $session->getIpSelDate();
                         $period = $session->getIpPeriod();
-
-                        // $item = $collection->getFirstItem();
 
                         $item = null;
 
@@ -132,7 +127,6 @@ class Status extends \Magento\Framework\App\Action\Action
 
                         $item->setSelectedSchedulingDates($selDate);
                         $item->setSelectedSchedulingPeriod($period);
-                        // $item->save();
                     }
 
                     $resultPage = $this->_resultPageFactory->create();

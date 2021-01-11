@@ -44,7 +44,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\App\ResourceConnection $resourceConnection,
         \Magento\Customer\Model\Session $session,
         \Magento\Framework\App\State $state
-
     ) {
         $this->_quoteFactory = $quoteFactory;
         $this->_sessionManager = $sessionManager;

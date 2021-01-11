@@ -5,7 +5,7 @@
  * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
  */
 
-namespace Intelipost\Quote\Model\Resource;
+namespace Intelipost\Quote\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
@@ -16,6 +16,4 @@ class Quote extends AbstractDb
     {
         $this->_init('intelipost_quote', 'id');
     }
-
 }
-

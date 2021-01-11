@@ -19,6 +19,4 @@ class Unit implements OptionSourceInterface
             ['value' => 'kg', 'label' => __('Kilo')]
         ];
     }
-
 }
-

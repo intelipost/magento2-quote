@@ -47,7 +47,9 @@ class OrderPlaceAfter implements ObserverInterface
                 return;
             }
 
-            $deliveryMethodId = $deliveryMethodId[count($deliveryMethodId) - 2] . "_" . $deliveryMethodId[count($deliveryMethodId) - 1];
+            $deliveryMethodId =
+                $deliveryMethodId[count($deliveryMethodId) - 2] .
+                "_" . $deliveryMethodId[count($deliveryMethodId) - 1];
 
             foreach ($this->_intelipostHelper->getResultQuotes() as $quote) {
                 if ($quote->getDeliveryMethodId() == $deliveryMethodId && $quote->getOrderId() == null) {

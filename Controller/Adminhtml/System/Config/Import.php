@@ -19,8 +19,6 @@ class Import extends \Magento\Backend\App\Action
 
     protected function _getImportSingleton()
     {
-        return $this->_objectManager->get('Intelipost\Quote\Model\Import');
+        return $this->_objectManager->get(\Intelipost\Quote\Model\Import::class);
     }
-
 }
-

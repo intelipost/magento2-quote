@@ -1,6 +1,6 @@
 <?php
 
-namespace Intelipost\Quote\Model\Resource\Shipment;
+namespace Intelipost\Quote\Model\ResourceModel\Shipment;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
@@ -27,7 +27,7 @@ class Collection extends AbstractCollection
     ) {
         $this->_init(
             'Intelipost\Quote\Model\Shipment',
-            'Intelipost\Quote\Model\Resource\Shipment'
+            'Intelipost\Quote\Model\ResourceModel\Shipment'
         );
         parent::__construct(
             $entityFactory,

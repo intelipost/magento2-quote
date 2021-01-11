@@ -1,8 +1,8 @@
 <?php
 
-namespace Intelipost\Quote\Model\Resource\Shipment\Grid;
+namespace Intelipost\Quote\Model\ResourceModel\Shipment\Grid;
 
-use Intelipost\Quote\Model\Resource\Shipment\Collection as GridCollection;
+use Intelipost\Quote\Model\ResourceModel\Shipment\Collection as GridCollection;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Search\AggregationInterface;
 

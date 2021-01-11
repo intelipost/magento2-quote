@@ -16,4 +16,3 @@ class Plugin
         return $result;
     }
 }
-

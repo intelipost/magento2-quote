@@ -133,7 +133,7 @@ class Api
     {
         $identifier = $this->getCacheIdentifier($postData);
 
-        return unserialize($this->_cache->load($identifier));
+        return \Magento\Framework\Serialize\SerializerInterface::unserialize($this->_cache->load($identifier));
     }
 
     public function getCacheIdentifier($postData)

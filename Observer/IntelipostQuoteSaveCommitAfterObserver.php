@@ -14,7 +14,7 @@ class IntelipostQuoteSaveCommitAfterObserver implements ObserverInterface
 {
     protected $_collectionFactory;
 
-    public function __construct(\Intelipost\Quote\Model\Resource\Shipment\CollectionFactory $collectionFactory)
+    public function __construct(\Intelipost\Quote\Model\ResourceModel\Shipment\CollectionFactory $collectionFactory)
     {
         $this->_collectionFactory = $collectionFactory;
     }

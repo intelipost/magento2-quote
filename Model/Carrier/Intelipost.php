@@ -47,8 +47,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         \Magento\Catalog\Model\ProductFactory $_productFactory,
         \Magento\Catalog\Model\ProductRepository $productRespository,
         array $data = []
-    )
-    {
+    ) {
         $this->_rateResultFactory = $rateResultFactory;
         $this->_rateMethodFactory = $rateMethodFactory;
         $this->_rateErrorFactory = $rateErrorFactory;
@@ -287,7 +286,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
             $method = $this->_rateMethodFactory->create();
 
             // Risk Area
-            $deliveryNote = @$child['delivery_note'];
+            $deliveryNote = isset($child['delivery_note']) ? $child['delivery_note'] : null;
             if (!empty($deliveryNote)) {
                 $error = $this->_rateErrorFactory->create();
 
@@ -340,8 +339,8 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
 
             $method->setMethod($child['delivery_method_id']);
 
-            $deliveryEstimateBusinessDays = @$child['delivery_estimate_business_days'];
-            $deliveryEstimateDateExactISO = @$child['delivery_estimate_date_exact_iso'];
+            $deliveryEstimateBusinessDays = isset($child['delivery_estimate_business_days']) ? $child['delivery_estimate_business_days'] : null;
+            $deliveryEstimateDateExactISO = isset($child['delivery_estimate_date_exact_iso']) ? $child['delivery_estimate_date_exact_iso'] : null;
             if ($estimateDeliveryDate && false /* Disabled */) {
                 $response = $this->api->getEstimateDeliveryDate(
                     $originZipcode,

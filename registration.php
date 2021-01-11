@@ -10,4 +10,3 @@
     'Intelipost_Quote',
     __DIR__
 );
-

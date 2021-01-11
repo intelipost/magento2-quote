@@ -14,8 +14,6 @@ class Quote extends AbstractModel
 
     protected function _construct()
     {
-        $this->_init('Intelipost\Quote\Model\Resource\Quote');
+        $this->_init('Intelipost\Quote\Model\ResourceModel\Quote');
     }
-
 }
-

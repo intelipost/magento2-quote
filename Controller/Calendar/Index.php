@@ -41,23 +41,14 @@ class Index extends \Magento\Framework\App\Action\Action
 
         $carrierName = $pieces [0];
         $deliveryMethodId = $pieces [1] . '_' . $pieces [2];
-        /*
-            $sessionId = $this->_helper->getSessionId();
 
-            $collection = $this->_quoteFactory->create()->getCollection();
-            $collection->getSelect()->where(
-                "session_id = '{$sessionId}' AND carrier = '{$carrierName}' AND delivery_method_id = '{$deliveryMethodId}'"
-            );
-
-            $item = $collection->getFirstItem();
-            if (!$item->getId()) return false;
-        */
         $item = null;
 
         foreach ($this->_helper->getResultQuotes() as $quote) {
-            if (!strcmp($quote->getCarrier(), $carrierName) && !strcmp($quote->getDeliveryMethodId(), $deliveryMethodId)) {
+            if (!strcmp($quote->getCarrier(), $carrierName)
+                && !strcmp($quote->getDeliveryMethodId(), $deliveryMethodId)
+            ) {
                 $item = $quote;
-
                 break;
             }
         }
@@ -73,7 +64,7 @@ class Index extends \Magento\Framework\App\Action\Action
         $resultPage = $this->_resultPageFactory->create();
         $this->getResponse()->setBody(
             $resultPage->getLayout()
-                ->createBlock('Magento\Framework\View\Element\Template')
+                ->createBlock(\Magento\Framework\View\Element\Template::class)
                 ->setQuoteItem($item)
                 ->setTemplate('Intelipost_Quote::calendar/result.phtml')
                 ->toHtml()

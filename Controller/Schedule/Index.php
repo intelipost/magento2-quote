@@ -59,7 +59,7 @@ class Index extends \Magento\Framework\App\Action\Action
         if (empty($quoteId) || empty($methodId) || empty($selDate) || empty($period)) {
             return false;
         }
-        if (intval($quoteId) < 1 || !strtotime($selDate)) {
+        if (((int) $quoteId) < 1 || !strtotime($selDate)) {
             return false;
         }
         /*
@@ -85,7 +85,6 @@ class Index extends \Magento\Framework\App\Action\Action
         $selDate = date('d/m/Y', $timestamp);
         $quoteItem->setSelectedSchedulingDates($selDate);
         $quoteItem->setSelectedSchedulingPeriod($period);
-        // $quoteItem->save();
 
         $session->setIpSelDate($selDate);
         $session->setIpPeriod($period);

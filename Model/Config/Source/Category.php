@@ -30,6 +30,4 @@ class Category extends \Magento\Catalog\Model\Config\Source\Category
 
         return $options;
     }
-
 }
-

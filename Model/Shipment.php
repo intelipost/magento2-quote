@@ -13,6 +13,6 @@ class Shipment extends AbstractModel
 {
     protected function _construct()
     {
-        $this->_init('Intelipost\Quote\Model\Resource\Shipment');
+        $this->_init('Intelipost\Quote\Model\ResourceModel\Shipment');
     }
 }

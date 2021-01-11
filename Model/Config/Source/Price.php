@@ -19,6 +19,4 @@ class Price implements OptionSourceInterface
             ['value' => 'cart', 'label' => __('Cart')]
         ];
     }
-
 }
-

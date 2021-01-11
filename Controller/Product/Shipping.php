@@ -59,23 +59,24 @@ class Shipping extends \Magento\Framework\App\Action\Action
 
         $result = $this->_quote->addProduct($product, $options);
         if (empty($result)) {
-            die(__($result));
+            var_dump(__($result));
+            die();
         }
 
         $this->_quote->collectTotals();
         $result = $this->_quote->getShippingAddress()->getGroupedAllShippingRates();
         if (is_string($result)) {
-            die($result);
+            var_dump($result);
+            die();
         }
 
         $resultPage = $this->_resultPageFactory->create();
         $this->getResponse()->setBody(
             $resultPage->getLayout()
-                ->createBlock('Magento\Framework\View\Element\Template')
+                ->createBlock(\Magento\Framework\View\Element\Template::class)
                 ->setRates($result)
                 ->setTemplate('Intelipost_Quote::product/view/result.phtml')
                 ->toHtml()
         );
     }
-
 }

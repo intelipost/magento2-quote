@@ -5,7 +5,7 @@
  * @author      Eneias Ramos de Melo <eneias@gamuza.com.br>
  */
 
-namespace Intelipost\Quote\Model\Resource\Quote;
+namespace Intelipost\Quote\Model\ResourceModel\Quote;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
@@ -16,9 +16,7 @@ class Collection extends AbstractCollection
     {
         $this->_init(
             'Intelipost\Quote\Model\Quote',
-            'Intelipost\Quote\Model\Resource\Quote'
+            'Intelipost\Quote\Model\ResourceModel\Quote'
         );
     }
-
 }
-

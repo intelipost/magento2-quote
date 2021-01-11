@@ -75,5 +75,4 @@ class InstallData implements InstallDataInterface
 
         $setup->endSetup();
     }
-
 }

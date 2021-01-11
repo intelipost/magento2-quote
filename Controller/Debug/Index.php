@@ -25,14 +25,6 @@ class Index extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        /*
-            $sessionId = $this->_intelipostHelper->getSessionId();
-
-            $collection = $this->_quoteFactory->create()->getCollection();
-            $collection->getSelect()->where("session_id = '{$sessionId}' AND order_id IS NULL");
-
-            $quoteItems = $collection->toArray();
-        */
         $quoteItems = ['items' => []];
 
         $resultPickup = $this->_intelipostHelper->getResultQuotes(\Intelipost\Quote\Helper\Data::RESULT_PICKUP);
