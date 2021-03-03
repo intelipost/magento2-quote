@@ -52,7 +52,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         $this->_rateMethodFactory = $rateMethodFactory;
         $this->_rateErrorFactory = $rateErrorFactory;
 
-        $this->productRepository = $productRespository;
+        $this->_productRepository = $productRespository;
         $this->_scopeConfig = $scopeConfig;
         $this->_helper = $helper;
         $this->api = $api;
@@ -91,7 +91,6 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
             'destination_zip_code' => preg_replace('#[^0-9]#', "", $destPostcode),
         ];
 
-        $this->_logger->debug(print_r($postData));
         if (strlen($postData['destination_zip_code']) != 8) {
             return false;
         }
