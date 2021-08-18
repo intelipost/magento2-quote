@@ -456,7 +456,7 @@ public function checkFreeshipping (& $response)
         {
             if ($deliveryEstimateDays < $lowerDeliveryDate)
             {
-                $lowerDeliveryDate = $DeliveryEstimateDays;
+                $lowerDeliveryDate = $deliveryEstimateDays;
                 $lowerMethod = $deliveryMethodId;
             }
 
