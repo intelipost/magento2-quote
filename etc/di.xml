@@ -13,6 +13,14 @@
 		<plugin name="IntelipostQuoteAddressCartShippingMethodConverter" type="Intelipost\Quote\Model\Cart\Plugin" sortOrder="2" disabled="false" />
 	</type>
 
+    <virtualType name="IntelipostCustomLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="error" xsi:type="object">Vendor\ModuleName\Logger\Handler\ErrorHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
     <type name="Intelipost\Quote\Logger\Logger">
         <arguments>
             <argument name="name" xsi:type="string">intelipost</argument>
@@ -25,5 +33,11 @@
 			<argument name="cache" xsi:type="object">\Magento\Framework\App\CacheInterface</argument>
 		</arguments>
 	</type>
+
+    <type name="Intelipost\Quote\Model\Carrier\Intelipost">
+        <arguments>
+            <argument name="logger" xsi:type="object">Intelipost\Quote\Logger\Logger</argument>
+        </arguments>
+    </type>
 </config>
 

@@ -7,7 +7,6 @@
 
 namespace Intelipost\Quote\Model\Carrier;
 
-use Intelipost\Quote\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
@@ -37,7 +36,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param ErrorFactory $rateErrorFactory
-     * @param Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
      * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
      * @param \Intelipost\Quote\Helper\Data $helper
@@ -48,7 +47,7 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         ErrorFactory  $rateErrorFactory,
-        Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Shipping\Model\Rate\ResultFactory         $rateResultFactory,
         \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
         \Intelipost\Quote\Helper\Data $helper,
@@ -422,27 +421,6 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
             }
         }
         return $arrayVol;
-    }
-
-    /**
-     * @param $message
-     */
-    public function logIntelipost($message)
-    {
-        if ($message) {
-            $logger = $this->_logger;
-            if ($logger) {
-                if (is_array($message)) {
-                    foreach ($message as $id => $content) {
-                        $logger->info($id);
-                        $logger->info($content);
-                    }
-                } else {
-                    $logger->info($message);
-                }
-
-            }
-        }
     }
 }
 
