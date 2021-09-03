@@ -422,5 +422,26 @@ class Intelipost extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
         }
         return $arrayVol;
     }
+
+    /**
+     * @param $message
+     */
+    public function logIntelipost($message)
+    {
+        if ($message) {
+            $logger = $this->_logger;
+            if ($logger) {
+                if (is_array($message)) {
+                    foreach ($message as $id => $content) {
+                        $logger->info($id);
+                        $logger->info($content);
+                    }
+                } else {
+                    $logger->info($message);
+                }
+
+            }
+        }
+    }
 }
 
