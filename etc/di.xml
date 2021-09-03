@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <type name="Magento\Quote\Model\Quote\Address">
     	<plugin name="IntelipostQuoteAddress" type="Intelipost\Quote\Model\Quote\Plugin" sortOrder="2" disabled="false" />
 	</type>
@@ -13,6 +13,11 @@
 		<plugin name="IntelipostQuoteAddressCartShippingMethodConverter" type="Intelipost\Quote\Model\Cart\Plugin" sortOrder="2" disabled="false" />
 	</type>
 
+    <type name="Intelipost\Quote\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">intelipost</argument>
+        </arguments>
+    </type>
 	<type name="Intelipost\Quote\Helper\Api">
 		<arguments>
 			<argument name="logger" xsi:type="object">Intelipost\Quote\Logger\Logger</argument>
