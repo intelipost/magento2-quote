@@ -11,6 +11,5 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: devteam
-  childof: 
-    - group:tms-engineering-managers
+  owner: vendas
+  system: quote-module
